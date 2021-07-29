@@ -1,28 +1,53 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <v-app-bar
+      app
+      color="primary"
+      dark
+    >
+      <div class="d-flex align-center">
+        <v-app-bar-title>
+          商品在庫発注管理システム
+        </v-app-bar-title>
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <v-btn href="/delivery" text>
+        <v-icon>mdi-page-next-outline</v-icon>
+        <span class="mx-2">納品管理</span>
+      </v-btn>
+
+      <v-btn href="#" text>
+        <v-icon>mdi-package-variant-closed</v-icon>
+        <span class="mx-2">在庫管理</span>
+      </v-btn>
+
+      <v-btn href="#" text>
+        <v-icon>mdi-order-bool-ascending-variant</v-icon>
+        <span class="mx-2">発注管理</span>
+      </v-btn>
+
+    </v-app-bar>
+
+    <v-main>
+        <router-view></router-view>
+    </v-main>
+
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  components: {
+    
+  },
+
+  data: () => ({
+    //
+  }),
+};
+</script>
