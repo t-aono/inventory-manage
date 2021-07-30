@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Delivery from './views/Delivery.vue'
-import EditDelivery from './views/EditDelivery.vue'
+import DeliveryList from './views/DeliveryList.vue'
+import DeliveryEdit from './views/DeliveryEdit.vue'
+import OrderList from './views/OrderList.vue'
+import OrderEdit from './views/OrderEdit.vue'
 
 Vue.use(Router);
 
@@ -17,12 +19,22 @@ export default new Router({
     {
       path: '/delivery',
       name: 'delivery',
-      component: Delivery
+      component: DeliveryList
     },
     {
-      path: '/edit-delivery',
-      name: 'edit-delivery',
-      component: EditDelivery
+      path: '/delivery-edit/:id',
+      name: 'delivery-edit',
+      component: DeliveryEdit
+    },
+    {
+      path: '/order',
+      name: 'order',
+      component: OrderList
+    },
+    {
+      path: '/order-edit/:id',
+      name: 'order-edit',
+      component: OrderEdit
     },
   ]
 });
