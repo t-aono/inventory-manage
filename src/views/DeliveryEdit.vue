@@ -18,7 +18,8 @@
               <v-select :items="peple" label="選択" v-model="person"></v-select>
             </v-col>
           </v-row>
-          <v-text-field label="商品" v-model="product"></v-text-field>
+          <!-- <v-text-field label="商品" v-model="product"></v-text-field> -->
+          <v-select :items="products" label="商品" v-model="product"></v-select>
           <v-text-field label="個数" type="number" v-model="amount"></v-text-field>
           <v-text-field label="日付" type="date" v-model="date"></v-text-field>
         </v-col>
@@ -50,6 +51,7 @@
 <script>
 export default {
   mounted() {
+    this.products = this.$store.getters['stock/getProducts'].map(obj => obj.product);
     if (this.$route.params.id > 0) {
       const data = this.$store.getters["delivery/getDataById"](Number(this.$route.params.id));
       this.person = data.person;
@@ -61,6 +63,7 @@ export default {
   },
   data() {
     return {
+      products: [],
       person: '',
       product: '',
       amount: '',

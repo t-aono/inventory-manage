@@ -4,8 +4,9 @@
     max-width="1000"
   >
     <v-card-text>
-      <v-list-item-title class="text-h5 mt-3 ml-3">
-        納品管理  
+      <v-list-item-title class="text-h5 mt-3 ml-5">
+        <v-icon>mdi-page-next-outline</v-icon>
+        <span class="mx-2">納品管理</span>
       </v-list-item-title>
 
       <v-card-actions>
@@ -15,7 +16,7 @@
           color="info accent-4"
           href="/delivery-edit/0"
         >
-          <v-icon>mdi-pencil-outline</v-icon>新規追加
+          <v-icon>mdi-plus-circle-outline</v-icon>新規追加
         </v-btn>
       </v-card-actions>
 

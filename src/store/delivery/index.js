@@ -1,33 +1,12 @@
 const state = {
   deliveries: [
-    {
+    /*{
       id: 1,
       person: 'トム',
       product: 'PCモニター',
       amount: 2,
       date: '2021/07/30'
-    },
-    {
-      id: 2,
-      person: 'ジョン',
-      product: 'かき氷機',
-      amount: 1,
-      date: '2021/06/30'
-    },
-    {
-      id: 3,
-      person: 'ジョージ',
-      product: 'そうめん',
-      amount: 3,
-      date: '2021/08/10'
-    },
-    {
-      id: 4,
-      person: 'トム',
-      product: 'マウスパッド',
-      amount: 5,
-      date: '2021/08/20'
-    },
+    },*/
   ]
 };
 
@@ -56,14 +35,12 @@ const mutations = {
     router.push('/delivery');
   },
   updateDelivery(state, data) {
-    state.deliveries = state.deliveries.map(de => {
-      if (de.id === Number(data.id)) return data;
-      else return de;
-    });
+    const index = state.deliveries.findIndex(de => de.id == data.id);
+    state.deliveries[index] = data;
     router.push('/delivery');
   },
   deleteDelivery(state, id) {
-    const index = state.deliveries.findIndex(de => de.id == id)
+    const index = state.deliveries.findIndex(de => de.id == id);
     state.deliveries.splice(index, 1);
   }
 }

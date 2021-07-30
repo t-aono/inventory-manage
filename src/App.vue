@@ -18,7 +18,7 @@
         <span class="mx-2">納品管理</span>
       </v-btn>
 
-      <v-btn href="#" text>
+      <v-btn href="/stock" text>
         <v-icon>mdi-package-variant-closed</v-icon>
         <span class="mx-2">在庫管理</span>
       </v-btn>

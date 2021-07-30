@@ -5,6 +5,8 @@ import DeliveryList from './views/DeliveryList.vue'
 import DeliveryEdit from './views/DeliveryEdit.vue'
 import OrderList from './views/OrderList.vue'
 import OrderEdit from './views/OrderEdit.vue'
+import StockList from './views/StockList.vue'
+import StockEdit from './views/StockEdit.vue'
 
 Vue.use(Router);
 
@@ -35,6 +37,16 @@ export default new Router({
       path: '/order-edit/:id',
       name: 'order-edit',
       component: OrderEdit
+    },
+    {
+      path: '/stock',
+      name: 'stock',
+      component: StockList
+    },
+    {
+      path: '/stock-edit/:id',
+      name: 'stock-edit',
+      component: StockEdit
     },
   ]
 });

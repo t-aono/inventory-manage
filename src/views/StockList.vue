@@ -5,8 +5,8 @@
   >
     <v-card-text>
       <v-list-item-title class="text-h5 mt-3 ml-5">
-        <v-icon>mdi-order-bool-ascending-variant</v-icon>
-        <span class="mx-2">発注管理</span>
+        <v-icon>mdi-package-variant-closed</v-icon>
+        <span class="mx-2">在庫管理</span>
       </v-list-item-title>
 
       <v-card-actions>
@@ -14,27 +14,27 @@
         <v-btn
           text
           color="info accent-4"
-          href="/order-edit/0"
+          href="/stock-edit/0"
         >
-          <v-icon>mdi-plus-circle-outline</v-icon>新規追加
+          <v-icon>mdi-plus-circle-outline</v-icon>商品追加
         </v-btn>
       </v-card-actions>
 
       <v-row>
         <v-col cols="10" sm="6" md="4" class="ml-5">
-          <v-select :items="peple" label="発注者を選択" v-model="search"></v-select>
+          <v-text-field label="商品検索" v-model="search"></v-text-field>
         </v-col>
       </v-row>
 
       <v-data-table
         :headers="headers"
-        :items="orders"
+        :items="products"
         :items-per-page="15"
         :search="search"
         class="elevation-1 mx-5 mb-5"
       >
         <template v-slot:[`item.id`]="{ item }">
-          <v-btn text color="info accent-4" :href="'/order-edit/' + item.id">
+          <v-btn text color="info accent-4" :href="'/stock-edit/' + item.id">
             <v-icon>mdi-pencil-outline</v-icon>編集
           </v-btn>
           <v-btn text color="info accent-4" @click="deleteorder(item.id)">
@@ -51,12 +51,10 @@
 <script>
 export default {
   mounted() {
-    this.peple = this.$store.getters["order/getOrderPeople"];
-    this.orders = this.$store.getters["order/getOrders"];
+    this.products = this.$store.getters['stock/getProducts'];
   },
   data() {
     return {
-      peple: [],
       search: '',
       headers: [
         {
@@ -64,13 +62,11 @@ export default {
           sortable: false,
           value: 'name',
         },
-        { text: '発注者', value: 'person' },
-        { text: '商品', value: 'product' },
+        { text: '商品名', value: 'product' },
         { text: '個数', value: 'amount' },
-        { text: '発注日付', value: 'date' },
         { text: '', value: 'id' },
       ],
-      orders: []
+      products: []
     }
   },
   methods: {
