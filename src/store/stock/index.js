@@ -1,41 +1,33 @@
+import router from "@/router";
+import db from '@/firebase/firestore'
+
 const state = {
   products: [
-    {
+    /*{
       id: 1,
       product: 'テレビ',
       amount: 0
-    },
-    {
-      id: 2,
-      product: 'フライパン',
-      amount: 0
-    },
-    {
-      id: 3,
-      product: 'ドライアー',
-      amount: 0
-    },
+    },*/
   ]
 };
 
 const getters = {
   getProducts: (state) => {
-    return state.products.sort((a, b) => b - a);
+    return state.products;
   },
   getDataById: (state) => (id) => {
-    return state.orders.find(products => products.id === id);
-  }
+    return state.products.find(data => data.id == id);
+  },
 };
 
-import router from "../../router";
 const mutations = {
   createProduct(state, data) {
     state.products.push(data);
     router.push('/stock');
   },
   updateProduct(state, data) {
-    const index = state.deliveries.findIndex(de => de.id == data.id);
-    state.deliveries[index] = data;
+    const index = state.products.findIndex(obj => obj.id == data.id);
+    state.products[index] = data;
     router.push('/stock');
   },
   deleteProduct(state, id) {
@@ -45,14 +37,37 @@ const mutations = {
 }
 
 const actions = {
+  fetchData() {
+    state.products = [];
+    db.collection('stock').orderBy('product', 'asc').get().then(snapshot => {
+      snapshot.forEach(doc => {
+        state.products.push({ 
+          id: doc.id, 
+          product: doc.data().product, 
+          amount: doc.data().amount 
+        });
+      });
+    });
+  },
   createProduct({ commit }, data) {
-    commit('createProduct', data);
+    db.collection('stock').add({
+      product: data.product,
+      amount: 0
+    }).then(() => {
+      commit('createProduct', data);
+    });
   },
   updateProduct({ commit }, data) {
-    commit('updateProduct', data);
+    db.collection('stock').doc(data.id).update({
+      product: data.product
+    }).then(() => {
+      commit('updateProduct', data);
+    });
   },
   deleteProduct({ commit }, { id }) {
-    commit('deleteProduct', id);
+    db.collection('stock').doc(id).delete().then(() => {
+      commit('deleteProduct', id);
+    });
   }
 }
 

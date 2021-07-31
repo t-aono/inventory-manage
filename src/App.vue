@@ -5,28 +5,59 @@
       color="primary"
       dark
     >
-      <div>
-        <v-app-bar-title>
-          商品在庫発注管理システム
-        </v-app-bar-title>
-      </div>
+      <v-app-bar-nav-icon @click="drawer = true" class="d-block d-md-none"></v-app-bar-nav-icon>
+      
+      <v-navigation-drawer v-model="drawer" absolute temporary app color="primary">
+        <v-list>
+          <v-list-item>
+            <router-link to="/delivery">
+              <v-icon>mdi-page-next-outline</v-icon>
+              <span class="mx-2 white--text">納品管理</span>
+            </router-link>
+          </v-list-item>
+          <v-list-item>
+            <router-link to="/stock">
+              <v-icon>mdi-package-variant-closed</v-icon>
+              <span class="mx-2 white--text">在庫管理</span>
+            </router-link>
+          </v-list-item>
+          <v-list-item>
+            <router-link to="/order">
+              <v-icon>mdi-order-bool-ascending-variant</v-icon>
+              <span class="mx-2 white--text">発注管理</span>
+            </router-link>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+
+      <v-app-bar-title>
+        商品在庫発注管理システム
+      </v-app-bar-title>
 
       <v-spacer></v-spacer>
 
-      <v-btn href="/delivery" text>
-        <v-icon>mdi-page-next-outline</v-icon>
-        <span class="mx-2">納品管理</span>
-      </v-btn>
+      <div class="d-none d-md-block">
+        <router-link to="/delivery">
+          <v-btn text>
+            <v-icon>mdi-page-next-outline</v-icon>
+            <span class="mx-2">納品管理</span>
+          </v-btn>
+        </router-link>
 
-      <v-btn href="/stock" text>
-        <v-icon>mdi-package-variant-closed</v-icon>
-        <span class="mx-2">在庫管理</span>
-      </v-btn>
+        <router-link to="/stock">
+          <v-btn text>
+            <v-icon>mdi-package-variant-closed</v-icon>
+            <span class="mx-2">在庫管理</span>
+          </v-btn>
+        </router-link>
 
-      <v-btn href="/order" text>
-        <v-icon>mdi-order-bool-ascending-variant</v-icon>
-        <span class="mx-2">発注管理</span>
-      </v-btn>
+        <router-link to="/order">
+          <v-btn text>
+            <v-icon>mdi-order-bool-ascending-variant</v-icon>
+            <span class="mx-2">発注管理</span>
+          </v-btn>
+        </router-link>
+      </div>
 
     </v-app-bar>
 
@@ -38,16 +69,16 @@
 </template>
 
 <script>
-
 export default {
   name: 'App',
-
-  components: {
-    
-  },
-
   data: () => ({
-    //
+    drawer: null
   }),
 };
 </script>
+
+<style>
+  a {
+    text-decoration: none;
+  }
+</style>

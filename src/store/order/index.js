@@ -1,3 +1,7 @@
+import router from "@/router";
+import db from '@/firebase/firestore'
+import firebase from 'firebase/app'
+
 const state = {
   orders: [
     /*{
@@ -19,16 +23,13 @@ const getters = {
     });
   },
   getOrderPeople: (state) => {
-    return state.orders.map(de => {
-      return de.person;
-    });
+    return state.orders.map(data => data.person);
   },
   getDataById: (state) => (id) => {
     return state.orders.find(orders => orders.id === id);
   }
 };
 
-import router from "../../router";
 const mutations = {
   createOrder(state, data) {
     state.orders.push(data);
@@ -46,14 +47,53 @@ const mutations = {
 }
 
 const actions = {
+  fetchData() {
+    state.orders = [];
+    db.collection('order').orderBy('date', 'desc').get().then(snapshot => {
+      snapshot.forEach(doc => {
+        state.orders.push({ 
+          id: doc.id, 
+          person: doc.data().person, 
+          product: doc.data().product,
+          amount: doc.data().amount,
+          date: doc.data().date 
+        });
+      });
+    });
+  },
   createOrder({ commit }, data) {
-    commit('createOrder', data);
+    db.collection('stock').doc(data.stockId).update({
+      amount: firebase.firestore.FieldValue.increment(data.amount)
+    });
+    db.collection('order').add({
+      person: data.person,
+      product: data.product,
+      amount: data.amount,
+      date: data.date
+    }).then(() => {
+      commit('createOrder', data);
+    });
   },
   updateOrder({ commit }, data) {
-    commit('updateOrder', data);
+    db.collection('stock').doc(data.stockId).update({
+      amount: firebase.firestore.FieldValue.increment(data.amount - data.deleteAmount),
+    });
+    db.collection('order').doc(data.id).update({
+      person: data.person,
+      product: data.product,
+      amount: data.amount,
+      date: data.date
+    }).then(() => {
+      commit('updateOrder', data);
+    });
   },
-  deleteOrder({ commit }, { id }) {
-    commit('deleteOrder', id);
+  deleteOrder({ commit }, data) {
+    db.collection('stock').doc(data.stockId).update({
+      amount: firebase.firestore.FieldValue.increment( - data.deleteAmount),
+    });
+    db.collection('order').doc(data.id).delete().then(() => {
+      commit('deleteOrder', data.id);
+    });
   }
 }
 

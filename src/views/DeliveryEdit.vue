@@ -38,10 +38,12 @@
           <v-icon>mdi-refresh</v-icon>
           <span class="mx-2">更新</span>
         </v-btn>
-        <v-btn text color="info accent-4" href="/delivery">
-          <v-icon>mdi-undo-variant</v-icon>
-          <span class="mx-2">戻る</span>
-        </v-btn>
+        <router-link to="/delivery">
+          <v-btn text color="info accent-4">
+            <v-icon>mdi-undo-variant</v-icon>
+            <span class="mx-2">戻る</span>
+          </v-btn>
+        </router-link>
       </v-card-actions>
 
     </v-card-text>

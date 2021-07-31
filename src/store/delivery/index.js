@@ -1,3 +1,5 @@
+import router from "@/router";
+
 const state = {
   deliveries: [
     /*{
@@ -28,7 +30,6 @@ const getters = {
   }
 };
 
-import router from "../../router";
 const mutations = {
   createDelivery(state, data) {
     state.deliveries.push(data);

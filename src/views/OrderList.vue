@@ -11,13 +11,11 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          text
-          color="info accent-4"
-          href="/order-edit/0"
-        >
-          <v-icon>mdi-plus-circle-outline</v-icon>新規追加
-        </v-btn>
+        <router-link to="/order-edit/0">
+          <v-btn text color="info accent-4">
+            <v-icon>mdi-plus-circle-outline</v-icon>新規追加
+          </v-btn>
+        </router-link>
       </v-card-actions>
 
       <v-row>
@@ -34,9 +32,11 @@
         class="elevation-1 mx-5 mb-5"
       >
         <template v-slot:[`item.id`]="{ item }">
-          <v-btn text color="info accent-4" :href="'/order-edit/' + item.id">
-            <v-icon>mdi-pencil-outline</v-icon>編集
-          </v-btn>
+          <router-link :to="{name: 'order-edit', params: {id: item.id}}">
+            <v-btn text color="info accent-4">
+              <v-icon>mdi-pencil-outline</v-icon>編集
+            </v-btn>
+          </router-link>
           <v-btn text color="info accent-4" @click="deleteorder(item.id)">
             <v-icon>mdi-trash-can-outline</v-icon>削除
           </v-btn>
@@ -50,7 +50,11 @@
 
 <script>
 export default {
-  mounted() {
+  created() {
+    // ステートにセット
+    this.$store.dispatch('stock/fetchData');
+    this.$store.dispatch('order/fetchData');
+    // 表示項目セット
     this.peple = this.$store.getters["order/getOrderPeople"];
     this.orders = this.$store.getters["order/getOrders"];
   },
@@ -75,8 +79,15 @@ export default {
   },
   methods: {
     deleteorder(id) {
+      const product = this.orders.find(data => data.id === id).product;
+      const deleteAmount = this.orders.find(data => data.id === id).amount;
+      const stockId = this.$store.getters['stock/getProducts'].find(data => data.product === product).id;
       if (confirm('削除しますか？')) {
-        this.$store.dispatch('order/deleteorder', { id });
+        this.$store.dispatch('order/deleteOrder', { 
+          id, 
+          deleteAmount,
+          stockId
+        });
       }
     },
   }

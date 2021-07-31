@@ -11,13 +11,14 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          text
-          color="info accent-4"
-          href="/delivery-edit/0"
-        >
-          <v-icon>mdi-plus-circle-outline</v-icon>新規追加
-        </v-btn>
+        <router-link to="/delivery-edit/0">
+          <v-btn
+            text
+            color="info accent-4"
+          >
+            <v-icon>mdi-plus-circle-outline</v-icon>新規追加
+          </v-btn>
+        </router-link>
       </v-card-actions>
 
       <v-row>
@@ -34,9 +35,11 @@
         class="elevation-1 mx-5 mb-5"
       >
         <template v-slot:[`item.id`]="{ item }">
-          <v-btn text color="info accent-4" :href="'/delivery-edit/' + item.id">
-            <v-icon>mdi-pencil-outline</v-icon>編集
-          </v-btn>
+          <router-link :to="{name: 'delivery-edit', params:{ id: item.id }}">
+            <v-btn text color="info accent-4">
+              <v-icon>mdi-pencil-outline</v-icon>編集
+            </v-btn>
+          </router-link>
           <v-btn text color="info accent-4" @click="deleteDelivery(item.id)">
             <v-icon>mdi-trash-can-outline</v-icon>削除
           </v-btn>
@@ -51,6 +54,7 @@
 <script>
 export default {
   mounted() {
+    this.$store.dispatch('stock/fetchData');
     this.peple = this.$store.getters["delivery/getDeliveryPeople"];
     this.deliveries = this.$store.getters["delivery/getDeliveries"];
   },

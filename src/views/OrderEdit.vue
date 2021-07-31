@@ -18,7 +18,7 @@
               <v-select :items="peple" label="選択" v-model="person"></v-select>
             </v-col>
           </v-row>
-          <v-text-field label="商品" v-model="product"></v-text-field>
+          <v-select :items="products" label="商品" v-model="product"></v-select>
           <v-text-field label="個数" type="number" v-model="amount"></v-text-field>
           <v-text-field label="日付" type="date" v-model="date"></v-text-field>
         </v-col>
@@ -37,10 +37,12 @@
           <v-icon>mdi-refresh</v-icon>
           <span class="mx-2">更新</span>
         </v-btn>
-        <v-btn text color="info accent-4" href="/order">
-          <v-icon>mdi-undo-variant</v-icon>
-          <span class="mx-2">戻る</span>
-        </v-btn>
+        <router-link to="/order">
+          <v-btn text color="info accent-4">
+            <v-icon>mdi-undo-variant</v-icon>
+            <span class="mx-2">戻る</span>
+          </v-btn>
+        </router-link>
       </v-card-actions>
 
     </v-card-text>
@@ -49,25 +51,37 @@
 
 <script>
 export default {
-  mounted() {
-    if (this.$route.params.id > 0) {
-      const data = this.$store.getters["order/getDataById"](Number(this.$route.params.id));
+  created() {
+    // 発注者をセット
+    this.peple = this.$store.getters["order/getOrderPeople"];
+    // 商品をセット
+    const products = this.$store.getters['stock/getProducts'];
+    if (products.length > 0) {
+        this.products = products.map(data => data.product);
+    } else {
+      this.error = "商品が未登録です。在庫管理から登録してください。";
+    }
+    if (this.$route.params.id !== "0") {
+      // 編集
+      const data = this.$store.getters["order/getDataById"](this.$route.params.id);
       this.person = data.person;
       this.product = data.product;
-      this.amount = data.amount; 
+      this.amount = data.amount;
+      this.deleteAmount = data.amount;
       this.date = data.date.replace(/\//g, '-');
     }
-    this.peple = this.$store.getters["order/getOrderPeople"];
   },
   data() {
     return {
+      peple: [],
+      products: [],
       person: '',
       product: '',
       amount: '',
+      deleteAmount: '',
       date: '',
       error: '',
-      isNew: (this.$route.params.id > 0) ? false : true,
-      peple: []
+      isNew: (this.$route.params.id !== "0") ? false : true,
     }
   },
   methods: {
@@ -79,7 +93,8 @@ export default {
         person: this.person,
         product: this.product,
         amount: this.amount,
-        date: this.date.replace(/-/g, '/')
+        date: this.date.replace(/-/g, '/'),
+        stockId: this.$store.getters['stock/getProducts'].find(data => data.product === this.product).id
       });
     },
     update() {
@@ -91,7 +106,9 @@ export default {
         person: this.person,
         product: this.product,
         amount: this.amount,
-        date: this.date.replace(/-/g, '/')
+        deleteAmount: this.deleteAmount,
+        date: this.date.replace(/-/g, '/'),
+        stockId: this.$store.getters['stock/getProducts'].find(data => data.product === this.product).id
       });
     },
     checkData() {
