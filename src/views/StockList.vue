@@ -1,9 +1,7 @@
 <template>
-  <v-card
-    class="mx-auto mt-10"
-    max-width="1000"
-  >
+  <v-card class="mx-auto mt-10" max-width="1000">
     <v-card-text>
+
       <v-list-item-title class="text-h5 mt-3 ml-5">
         <v-icon>mdi-package-variant-closed</v-icon>
         <span class="mx-2">在庫管理</span>
@@ -42,6 +40,7 @@
           </v-btn>
         </template>
       </v-data-table>
+      
     </v-card-text>
   </v-card>
 </template>

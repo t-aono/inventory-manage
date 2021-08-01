@@ -3,15 +3,7 @@ import db from '@/firebase/firestore'
 import firebase from 'firebase/app'
 
 const state = {
-  orders: [
-    /*{
-      id: 1,
-      person: 'トミー',
-      product: 'PCモニター',
-      amount: 2,
-      date: '2021/07/30'
-    },*/
-  ]
+  orders: []
 };
 
 const getters = {
@@ -89,7 +81,7 @@ const actions = {
   },
   deleteOrder({ commit }, data) {
     db.collection('stock').doc(data.stockId).update({
-      amount: firebase.firestore.FieldValue.increment( - data.deleteAmount),
+      amount: firebase.firestore.FieldValue.increment( - data.deleteAmount)
     });
     db.collection('order').doc(data.id).delete().then(() => {
       commit('deleteOrder', data.id);

@@ -1,15 +1,13 @@
 <template>
-  <v-card
-    class="mx-auto mt-10"
-    max-width="1000"
-  >
+  <v-card class="mx-auto mt-10" max-width="1000">
     <v-card-text>
+
       <v-list-item-title class="text-h5 mt-3 ml-5">
         <v-icon>mdi-page-next-outline</v-icon>
-        <span class="mx-2">納品管理</span>
+        <span class="mx-2">納入管理</span>
       </v-list-item-title>
 
-      <v-card-actions>
+      <v-card-actions v-if="this.existProduct">
         <v-spacer></v-spacer>
         <router-link to="/delivery-edit/0">
           <v-btn
@@ -21,9 +19,15 @@
         </router-link>
       </v-card-actions>
 
+      <div v-else>
+        <v-alert dense outlined type="warning" class="mt-5">
+          商品が未登録です。在庫管理から登録してください。
+        </v-alert>
+      </div>
+
       <v-row>
         <v-col cols="10" sm="6" md="4" class="ml-5">
-          <v-select :items="peple" label="納品者を選択" v-model="search"></v-select>
+          <v-select :items='$store.getters["delivery/getDeliveryPeople"]' label="納入者を選択" v-model="search"></v-select>
         </v-col>
       </v-row>
 
@@ -46,21 +50,24 @@
         </template>
       </v-data-table>
           
-
     </v-card-text>
   </v-card>
 </template>
 
 <script>
 export default {
+  created() {
+    this.existProduct = (this.$store.state.stock.products.length == 0) ? false : true;
+  },
   mounted() {
+    // ステートにセット
     this.$store.dispatch('stock/fetchData');
-    this.peple = this.$store.getters["delivery/getDeliveryPeople"];
+    this.$store.dispatch('delivery/fetchData');
+    // 表示項目セット
     this.deliveries = this.$store.getters["delivery/getDeliveries"];
   },
   data() {
     return {
-      peple: [],
       search: '',
       headers: [
         {
@@ -68,21 +75,35 @@ export default {
           sortable: false,
           value: 'name',
         },
-        { text: '納品者', value: 'person' },
+        { text: '納入者', value: 'person' },
         { text: '商品', value: 'product' },
         { text: '個数', value: 'amount' },
-        { text: '納品日付', value: 'date' },
+        { text: '納入日付', value: 'date' },
         { text: '', value: 'id' },
       ],
-      deliveries: []
+      deliveries: [],
+      existProduct: true
     }
   },
   methods: {
     deleteDelivery(id) {
+      const product = this.deliveries.find(data => data.id === id).product;
+      const addAmount = this.deliveries.find(data => data.id === id).amount;
+      const stockId = this.$store.getters['stock/getDeliveries'].find(data => data.product === product).id;
       if (confirm('削除しますか？')) {
-        this.$store.dispatch('delivery/deleteDelivery', { id });
+        this.$store.dispatch('delivery/deleteDelivery', {
+          id,
+          addAmount,
+          stockId
+        });
       }
     },
   }
 }
 </script>
+
+<style scoped>
+  [v-cloak] {
+    display: none;
+  }
+</style>

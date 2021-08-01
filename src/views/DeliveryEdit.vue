@@ -5,20 +5,19 @@
   >
     <v-card-text>
       <v-list-item-title class="text-h5 mt-3 ml-3">
-        納品編集 
+        納入編集 
       </v-list-item-title>
 
       <v-row>
         <v-col cols="10" md="8" class="mx-auto my-3">
           <v-row>
             <v-col cols="6">
-              <v-text-field label="納品者" v-model="person"></v-text-field>
+              <v-text-field label="納入者" v-model="person"></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-select :items="peple" label="選択" v-model="person"></v-select>
             </v-col>
           </v-row>
-          <!-- <v-text-field label="商品" v-model="product"></v-text-field> -->
           <v-select :items="products" label="商品" v-model="product"></v-select>
           <v-text-field label="個数" type="number" v-model="amount"></v-text-field>
           <v-text-field label="日付" type="date" v-model="date"></v-text-field>
@@ -53,15 +52,20 @@
 <script>
 export default {
   mounted() {
-    this.products = this.$store.getters['stock/getProducts'].map(obj => obj.product);
-    if (this.$route.params.id > 0) {
-      const data = this.$store.getters["delivery/getDataById"](Number(this.$route.params.id));
+    // 納入者をセット
+    this.peple = this.$store.getters["delivery/getDeliveryPeople"];
+    // 商品をセット
+    const products = this.$store.getters['stock/getProducts'];
+    this.products = products.map(data => data.product);
+    if (this.$route.params.id != 0) {
+      // 編集
+      const data = this.$store.getters["delivery/getDataById"](this.$route.params.id);
       this.person = data.person;
       this.product = data.product;
       this.amount = data.amount; 
+      this.addAmount = data.amount;
       this.date = data.date.replace(/\//g, '-');
     }
-    this.peple = this.$store.getters["delivery/getDeliveryPeople"];
   },
   data() {
     return {
@@ -69,9 +73,10 @@ export default {
       person: '',
       product: '',
       amount: '',
+      addAmount: '',
       date: '',
       error: '',
-      isNew: (this.$route.params.id > 0) ? false : true,
+      isNew: (this.$route.params.id != 0) ? false : true,
       peple: []
     }
   },
@@ -84,7 +89,8 @@ export default {
         person: this.person,
         product: this.product,
         amount: this.amount,
-        date: this.date.replace(/-/g, '/')
+        date: this.date.replace(/-/g, '/'),
+        stockId: this.$store.getters['stock/getProducts'].find(data => data.product === this.product).id
       });
     },
     update() {
@@ -96,7 +102,9 @@ export default {
         person: this.person,
         product: this.product,
         amount: this.amount,
-        date: this.date.replace(/-/g, '/')
+        addAmount: this.addAmount,
+        date: this.date.replace(/-/g, '/'),
+        stockId: this.$store.getters['stock/getProducts'].find(data => data.product === this.product).id
       });
     },
     checkData() {

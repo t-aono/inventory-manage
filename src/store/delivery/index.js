@@ -1,15 +1,9 @@
 import router from "@/router";
+import db from '@/firebase/firestore'
+import firebase from 'firebase/app'
 
 const state = {
-  deliveries: [
-    /*{
-      id: 1,
-      person: 'トム',
-      product: 'PCモニター',
-      amount: 2,
-      date: '2021/07/30'
-    },*/
-  ]
+  deliveries: []
 };
 
 const getters = {
@@ -21,9 +15,7 @@ const getters = {
     });
   },
   getDeliveryPeople: (state) => {
-    return state.deliveries.map(de => {
-      return de.person;
-    });
+    return state.deliveries.map(data => data.person);
   },
   getDataById: (state) => (id) => {
     return state.deliveries.find(delivery => delivery.id === id);
@@ -47,14 +39,53 @@ const mutations = {
 }
 
 const actions = {
+  fetchData() {
+    state.deliveries = [];
+    db.collection('delivery').orderBy('date', 'desc').get().then(snapshot => {
+      snapshot.forEach(doc => {
+        state.deliveries.push({ 
+          id: doc.id, 
+          person: doc.data().person, 
+          product: doc.data().product,
+          amount: doc.data().amount,
+          date: doc.data().date 
+        });
+      });
+    });
+  },
   createDelivery({ commit }, data) {
-    commit('createDelivery', data);
+    db.collection('stock').doc(data.stockId).update({
+      amount: firebase.firestore.FieldValue.increment( - data.amount)
+    });
+    db.collection('delivery').add({
+      person: data.person,
+      product: data.product,
+      amount: data.amount,
+      date: data.date
+    }).then(() => {
+      commit('createDelivery', data);
+    });
   },
   updateDelivery({ commit }, data) {
-    commit('updateDelivery', data);
+    db.collection('stock').doc(data.stockId).update({
+      amount: firebase.firestore.FieldValue.increment(data.addAmount - data.amount),
+    });
+    db.collection('delivery').doc(data.id).update({
+      person: data.person,
+      product: data.product,
+      amount: data.amount,
+      date: data.date
+    }).then(() => {
+      commit('updateDelivery', data);
+    });
   },
-  deleteDelivery({ commit }, { id }) {
-    commit('deleteDelivery', id);
+  deleteDelivery({ commit }, data) {
+    db.collection('stock').doc(data.stockId).update({
+      amount: firebase.firestore.FieldValue.increment(data.addAmount)
+    });
+    db.collection('order').doc(data.id).delete().then(() => {
+      commit('deleteDelivery', data.id);
+    });
   }
 }
 

@@ -2,13 +2,7 @@ import router from "@/router";
 import db from '@/firebase/firestore'
 
 const state = {
-  products: [
-    /*{
-      id: 1,
-      product: 'テレビ',
-      amount: 0
-    },*/
-  ]
+  products: []
 };
 
 const getters = {

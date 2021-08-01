@@ -56,12 +56,8 @@ export default {
     this.peple = this.$store.getters["order/getOrderPeople"];
     // 商品をセット
     const products = this.$store.getters['stock/getProducts'];
-    if (products.length > 0) {
-        this.products = products.map(data => data.product);
-    } else {
-      this.error = "商品が未登録です。在庫管理から登録してください。";
-    }
-    if (this.$route.params.id !== "0") {
+    this.products = products.map(data => data.product);
+    if (this.$route.params.id != 0) {
       // 編集
       const data = this.$store.getters["order/getDataById"](this.$route.params.id);
       this.person = data.person;
