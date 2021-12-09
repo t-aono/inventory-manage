@@ -18,6 +18,5 @@
 - 納入者ごとの納入一覧表示、登録、編集、削除。
 - 発注者ごとの発注一覧表示、登録、編集、削除。
 
-<br>
-
-画面イメージはこちら → [Notion](https://ossified-elephant-7c0.notion.site/faf4cda0c77948ddb9cce0418d38b186)
+### 画面イメージ
+![](https://user-images.githubusercontent.com/46856574/145413956-7c680629-c022-4fb8-bd54-6b63f77a2b04.png)
