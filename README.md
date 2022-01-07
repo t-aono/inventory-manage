@@ -1,22 +1,70 @@
-### 利用した技術
+# inventory-manage
 
-- Vue.js / Vue Router / Vuex　（JavaScript ライブラリ）
-- Firebase / Firestore　（Baas：Backend as a Service）
-- Vutify　（Vue UI ライブラリ）
+## Overview
 
-### 要件
+Warehouse management web application for small retailers.
 
-- 小規模企業向けの在庫発注管理システム。
-- 納入者ごとの記録管理ができる。
-- 在庫の一元管理ができる。
-- 発注者ごとの記録管理ができる。
+## Description
 
-### 機能
+You can leave a delivery history for each supplier.  
+Order history for each orderer can be left.
+Centralized inventory management is possible.
 
-- 在庫（商品）の登録、編集、削除。
-- 納入、発注に応じた在庫数量の表示。
-- 納入者ごとの納入一覧表示、登録、編集、削除。
-- 発注者ごとの発注一覧表示、登録、編集、削除。
+## Demo
 
-### 画面イメージ
-![](https://user-images.githubusercontent.com/46856574/145413956-7c680629-c022-4fb8-bd54-6b63f77a2b04.png)
+<!-- ## VS. -->
+
+## Requirement
+
+- "firebase": "^8.8.1",
+- "vue": "^2.6.11",
+- "vue-router": "^3.5.2",
+- "vuetify": "^2.4.0",
+- "vuex": "^3.6.2"
+
+## Usage
+
+Compile for production
+
+```
+yarn run build
+```
+
+## Install
+
+Since Firebase will be used, please create a project in advance.
+
+1. Get source code
+
+   ```
+   git clone git@github.com:t-aono/inventory-manage.git
+   ```
+
+2. Copy .env-example to create .env and set environment variables for your Firebase project.
+
+   ```
+   cp .env-example .env
+   ```
+
+3. Add package.
+
+   ```
+   yarn
+   ```
+
+4. Start local development environment.
+
+   ```
+   yarn run serve
+   ```
+
+<!-- ## Contribution -->
+
+<!-- ## Licence -->
+
+## Author
+
+[t-aono](https://github.com/t-aono)
+
+<!-- README.md Sample -->
+<!-- https://deeeet.com/writing/2014/07/31/readme/ -->
