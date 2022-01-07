@@ -7,10 +7,12 @@ Warehouse management web application for small retailers.
 ## Description
 
 You can leave a delivery history for each supplier.  
-Order history for each orderer can be left.
+Order history for each orderer can be left.  
 Centralized inventory management is possible.
 
 ## Demo
+
+![daeHtzkghS5HRIiFu5hu1641524095-1641524156](https://user-images.githubusercontent.com/46856574/148484127-7135cbd5-4f34-4048-94ae-5f592553e7d2.gif)
 
 <!-- ## VS. -->
 
